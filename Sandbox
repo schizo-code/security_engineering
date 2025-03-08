@@ -1,14 +1,34 @@
+import string
 from collections import Counter
 
-# Function to count letter occurrences and sort by highest to lowest count
-def count_letter_occurrences(text: str) -> dict:
-    letter_count = Counter(text.upper())
-    # Sort by count in descending order
-    sorted_letter_count = dict(sorted(letter_count.items(), key=lambda x: x[1], reverse=True))
-    return sorted_letter_count
+# Define English letter frequency (from most to least common)
+ENGLISH_FREQUENCY = 'ETAOINSHRDLCUMWFGYPBVKJXQZ'
+
+# Function to get frequency of letters in the ciphertext
+def get_letter_frequency(text):
+    text = ''.join(filter(str.isalpha, text.upper()))  # Keep only letters
+    return Counter(text)
+
+# Function to map cipher letters to most likely plain letters based on frequency analysis
+def get_substitution_mapping(ciphertext):
+    letter_frequency = get_letter_frequency(ciphertext)
+    most_common = ''.join([pair[0] for pair in letter_frequency.most_common()])
+    mapping = dict(zip(most_common, ENGLISH_FREQUENCY))
+    return mapping
+
+# Function to decrypt the ciphertext using the mapping
+def decrypt_with_mapping(ciphertext, mapping):
+    decrypted_text = ''
+    for char in ciphertext.upper():
+        if char in mapping:
+            decrypted_text += mapping[char]
+        else:
+            decrypted_text += char
+    return decrypted_text
 
 # Example usage
 if __name__ == '__main__':
-    random_string = input("Enter a random string of letters: ")
-    letter_counts = count_letter_occurrences(random_string)
-    print("Letter Counts (Highest to Lowest):", letter_counts)
+    ciphertext = input("Enter the ciphertext: ")
+    mapping = get_substitution_mapping(ciphertext)
+    decrypted_text = decrypt_with_mapping(ciphertext, mapping)
+    print("Decrypted text:", decrypted_text)
