@@ -1,0 +1,14 @@
+from collections import Counter
+
+# Function to count letter occurrences and sort by highest to lowest count
+def count_letter_occurrences(text: str) -> dict:
+    letter_count = Counter(text.upper())
+    # Sort by count in descending order
+    sorted_letter_count = dict(sorted(letter_count.items(), key=lambda x: x[1], reverse=True))
+    return sorted_letter_count
+
+# Example usage
+if __name__ == '__main__':
+    random_string = input("Enter a random string of letters: ")
+    letter_counts = count_letter_occurrences(random_string)
+    print("Letter Counts (Highest to Lowest):", letter_counts)
