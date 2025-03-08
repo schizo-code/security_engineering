@@ -1,8 +1,13 @@
 from collections import Counter
 
+# Function to filter out non-letter characters
+def filter_letters(text: str) -> str:
+    return ''.join(filter(str.isalpha, text.upper()))
+
 # Function to count letter occurrences and sort by highest to lowest count
 def count_letter_occurrences(text: str) -> dict:
-    letter_count = Counter(text.upper())
+    text = filter_letters(text)  # Apply filter to keep only letters
+    letter_count = Counter(text)
     # Sort by count in descending order
     sorted_letter_count = dict(sorted(letter_count.items(), key=lambda x: x[1], reverse=True))
     return sorted_letter_count
